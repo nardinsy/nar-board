@@ -1,10 +1,10 @@
-# DevBoard
+# NarBoard
 
 A task management app built with React to track and manage project progress across different stages.
 
 ## Overview
 
-DevBoard is a Kanban-style task manager where you can create, edit, delete, and drag tasks between columns to track their progress. Built as a real-world architecture practice project — not a tutorial clone.
+NarBoard is a Kanban-style task manager where you can create, edit, delete, and drag tasks between columns to track their progress. Built as a real-world architecture practice project — not a tutorial clone.
 
 ## Live Demo
 
@@ -19,7 +19,7 @@ _Coming soon_
 | Tool                  | Why                                                 |
 | --------------------- | --------------------------------------------------- |
 | React 19 + TypeScript | Industry standard, strict type safety               |
-| Vite                  | Fast development server, instant HMR                |
+| Vite                  | Fast development server                             |
 | TanStack Query        | Server state management, caching, and data fetching |
 | Zustand               | Lightweight client state management                 |
 | React Hook Form + Zod | Form handling with runtime schema validation        |
