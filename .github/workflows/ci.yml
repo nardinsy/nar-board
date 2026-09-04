@@ -1,6 +1,6 @@
 name: CI
 
-on: 
+on:
   push:
     branches: [main]
   pull_request:
@@ -9,21 +9,25 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+
     steps:
-      -name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      -name: Setup Node.jobs
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
 
-      -name: Install dependencies
-      run: npm ci 
+      - name: Install dependencies
+        run: npm ci
 
-      -name: TypeScript check
-      run: npx tsx --noEmit
+      - name: Lint
+        run: npm run lint
 
-      -name: Run tests
-      run: npx vitest run
+      - name: Build
+        run: npm run Build
+
+      - name: Run tests
+        run: npx vitest run
