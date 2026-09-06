@@ -29,4 +29,5 @@ function Button({
   );
 }
 
+export { buttonVariants } from "./button-variants";
 export { Button };
