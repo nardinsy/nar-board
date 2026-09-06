@@ -40,7 +40,9 @@ export const Modal = ({
         className="relative w-3/4 md:w-1/2 bg-white rounded-md p-4 shadow-2xl"
       >
         <header className="flex justify-between pb-2">
-          <h2 className="text-xl">{title}</h2>
+          <h2 id={titleId} className="text-xl">
+            {title}
+          </h2>
           <button
             type="button"
             aria-label="Close dialog"

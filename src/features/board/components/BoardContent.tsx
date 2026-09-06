@@ -1,40 +1,12 @@
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { useTasks } from '../hooks/useTasks';
-import { BoardColumns } from './BoardColumns';
-import { ColumnStatus } from '../types';
-import { useMemo, useRef } from 'react';
+import { useTasks } from "../hooks/useTasks";
+import { BoardColumns } from "./BoardColumns";
+import { ColumnStatus } from "../types";
+import { useMemo, useRef } from "react";
 
 export const BoardContent = ({ boardId }: { boardId: string }) => {
   const { data: tasks, error, isLoading, dataUpdatedAt } = useTasks(boardId);
-  // TODO fix this mess
-  // const todoTasks = tasks?.filter((task) => task.status === 'todo');
-  // const inProgressTasks = tasks?.filter((task) => task.status === 'in-progress');
-  // const inReviewTasks = tasks?.filter((task) => task.status === 'in-review');
-  // const doneTasks = tasks?.filter((task) => task.status === 'done');
-
-  // const boardData: { id: UniqueIdentifier; status: ColumnStatus; tasks: Task[] }[] = [
-  //   {
-  //     id: 'todo',
-  //     status: 'todo',
-  //     tasks: todoTasks ?? [],
-  //   },
-  //   {
-  //     id: 'in-progress',
-  //     status: 'in-progress',
-  //     tasks: inProgressTasks ?? [],
-  //   },
-  //   {
-  //     id: 'in-review',
-  //     status: 'in-review',
-  //     tasks: inReviewTasks ?? [],
-  //   },
-  //   {
-  //     id: 'done',
-  //     status: 'done',
-  //     tasks: doneTasks ?? [],
-  //   },
-  // ];
 
   const scrollPositions = useRef<Record<string, number>>({});
   const saveScrollPosition = (columnId: string, scrollTop: number) => {
@@ -43,10 +15,10 @@ export const BoardContent = ({ boardId }: { boardId: string }) => {
 
   const boardData = useMemo(() => {
     const statuses: { id: ColumnStatus; status: ColumnStatus }[] = [
-      { id: 'todo', status: 'todo' },
-      { id: 'in-progress', status: 'in-progress' },
-      { id: 'in-review', status: 'in-review' },
-      { id: 'done', status: 'done' },
+      { id: "todo", status: "todo" },
+      { id: "in-progress", status: "in-progress" },
+      { id: "in-review", status: "in-review" },
+      { id: "done", status: "done" },
     ];
 
     return statuses.map((col) => ({
@@ -57,6 +29,7 @@ export const BoardContent = ({ boardId }: { boardId: string }) => {
 
   return (
     <div className="relative">
+      {/* // TODO make this component */}
       {error && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/40 backdrop-blur-xs">
           <div className="w-1/4 text-center bg-white border border-red-200 rounded-xl px-6 py-16 shadow-2xl">
@@ -70,11 +43,10 @@ export const BoardContent = ({ boardId }: { boardId: string }) => {
           </div>
         </div>
       )}
-
       <section
         className={clsx(
-          'overflow-x-scroll lg:overflow-x-hidden overflow-y-hidden flex flex-row gap-2 px-2 md:justify-center py-1',
-          error && 'pointer-events-none'
+          "overflow-x-scroll lg:overflow-x-hidden overflow-y-hidden flex flex-row gap-2 px-2 md:justify-center py-1",
+          error && "pointer-events-none",
         )}
       >
         <BoardColumns
@@ -89,3 +61,32 @@ export const BoardContent = ({ boardId }: { boardId: string }) => {
     </div>
   );
 };
+
+// TODO fix this mess
+// const todoTasks = tasks?.filter((task) => task.status === 'todo');
+// const inProgressTasks = tasks?.filter((task) => task.status === 'in-progress');
+// const inReviewTasks = tasks?.filter((task) => task.status === 'in-review');
+// const doneTasks = tasks?.filter((task) => task.status === 'done');
+
+// const boardData: { id: UniqueIdentifier; status: ColumnStatus; tasks: Task[] }[] = [
+//   {
+//     id: 'todo',
+//     status: 'todo',
+//     tasks: todoTasks ?? [],
+//   },
+//   {
+//     id: 'in-progress',
+//     status: 'in-progress',
+//     tasks: inProgressTasks ?? [],
+//   },
+//   {
+//     id: 'in-review',
+//     status: 'in-review',
+//     tasks: inReviewTasks ?? [],
+//   },
+//   {
+//     id: 'done',
+//     status: 'done',
+//     tasks: doneTasks ?? [],
+//   },
+// ];
