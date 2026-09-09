@@ -4,7 +4,7 @@ A task management app built with React to track and manage project progress acro
 
 ## Overview
 
-NarBoard is a Kanban-style task manager where you can create, edit, delete, and drag tasks between columns to track their progress. Built as a real-world architecture practice project — not a tutorial clone.
+NarBoard is a Kanban-style task manager where you can create, edit, delete, and drag tasks between columns to track their progress. Built as a real-world architecture practice project.
 
 ## Live Demo
 
@@ -12,7 +12,8 @@ _Coming soon_
 
 ## Screenshots
 
-_Coming soon_
+![Screenshot of the application](src/assets/light.png)
+![Screenshot of the application](src/assets/dark.png)
 
 ## Tech Stack
 
