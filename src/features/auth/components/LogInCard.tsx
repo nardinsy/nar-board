@@ -43,18 +43,20 @@ export const LogInCard = () => {
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <Input type="email" {...register('email')} placeholder="Enter your email" />
-            {errors.email && <span className="text-red-400 p-1">{errors.email.message}</span>}
+            {errors.email && <span className="text-destructive p-1">{errors.email.message}</span>}
           </div>
 
           <div>
             <Input type="password" {...register('password')} placeholder="Enter your password" />
-            {errors.password && <span className="text-red-400 p-1">{errors.password.message}</span>}
+            {errors.password && (
+              <span className="text-destructive p-1">{errors.password.message}</span>
+            )}
           </div>
 
           <Button className="w-full" disabled={isPending} size="lg">
             {isPending ? 'Signing in...' : 'Login'}
           </Button>
-          {error && <div className="text-red-400 text-sm">{(error as Error).message}</div>}
+          {error && <div className="text-destructive text-sm">{(error as Error).message}</div>}
         </form>
       </CardContent>
 

@@ -12,6 +12,7 @@ import { ColumnStatus } from '../types';
 import { Task } from '@/features/tasks/types';
 
 import { ROUTE_BUILDERS } from '@/router/routes';
+import { Button } from '@/components/ui';
 
 const statusIconVariants: Record<ColumnStatus, string> = {
   'in-progress': 'bg-sky-300',
@@ -58,7 +59,7 @@ export const BoardColumn = ({
 
   const content =
     tasks.length === 0 ? (
-      <div className="flex justify-center py-8 text-gray-400 text-sm">No task yet</div>
+      <div className="flex justify-center py-8 text-foreground text-sm">No task yet</div>
     ) : (
       <div
         ref={(node) => {
@@ -66,7 +67,7 @@ export const BoardColumn = ({
           parentRef.current = node;
         }}
         onScroll={(e) => onScroll(status, e.currentTarget.scrollTop)}
-        className="overflow-y-auto scrollbar-thin"
+        className="overflow-y-auto scrollbar-thin scrollbar-track-secondary scrollbar-thumb-foreground"
       >
         <ul style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
           {virtualizer.getVirtualItems().map((virtualItem) => {
@@ -91,29 +92,33 @@ export const BoardColumn = ({
   return (
     <section
       ref={setNodeRef}
-      className="flex flex-col gap-3 bg-neutral-100 rounded-xl p-3 min-w-72 max-h-[calc(100vh-100px)]"
+      className="flex flex-col gap-3 bg-secondary rounded-xl p-3 min-w-72 max-h-[calc(100vh-100px)]"
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-1 text-gray-800">
+      <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
           <span className={clsx('w-2.5 h-2.5 rounded-full', statusIconVariants[status])} />
-          <h2 className="text-sm font-medium text-gray-700">{statusTitleVariants[status]}</h2>
+          <h2 className="text-sm font-medium text-secondary-foreground">
+            {statusTitleVariants[status]}
+          </h2>
           <span className="text-sm text-gray-400 bg-white rounded-full px-2 py-0.5 border border-gray-200">
             {tasks.length}
           </span>
         </div>
-        <button
+        <Button
+          type="button"
+          variant="secondary"
           onClick={() => navigate(ROUTE_BUILDERS.createTask(boardId!, status))}
-          className="text-gray-400 hover:text-gray-600 hover:bg-white rounded-full p-1 transition-colors cursor-pointer"
+          className="p-1 transition-none"
           aria-label="Add task"
         >
           <Plus size={14} />
-        </button>
+        </Button>
       </div>
 
       <SortableContext items={tasks.map((task) => task.id)} strategy={verticalListSortingStrategy}>
         {isLoading ? (
-          <div className="flex justify-center py-8 text-gray-400 text-sm">Loading ...</div>
+          <div className="flex justify-center py-8 text-foreground text-sm">Loading ...</div>
         ) : (
           content
         )}

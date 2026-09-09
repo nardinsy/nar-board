@@ -34,7 +34,7 @@ export const TaskCard = ({ id, task }: { id: UniqueIdentifier; task: Task }) => 
       {...attributes}
       {...listeners}
       className={clsx(
-        `w-full min-h-24 flex flex-col justify-between rounded-2xl p-2 bg-white shadow-sm cursor-grab active:cursor-grabbing ${isDragging ? 'z-10 shadow-md opacity-50' : ''}`,
+        `w-full min-h-24 flex flex-col justify-between rounded-2xl p-2 bg-background shadow-sm cursor-grab active:cursor-grabbing ${isDragging ? 'z-10 shadow-md opacity-50' : ''}`,
         cardBorderVariants[task.priority]
       )}
     >

@@ -1,12 +1,13 @@
 import { useEffect, useId } from 'react';
 import { XIcon } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import { Button } from './ui';
 
 const ModalBackdrop = ({ onClick }: { onClick: () => void }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute inset-0 bg-white/40 backdrop-blur-xs transition-all animate-in"
+      className="absolute inset-0 backdrop-blur-xs transition-all animate-in"
     />
   );
 };
@@ -37,20 +38,15 @@ export const Modal = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative w-3/4 md:w-1/2 bg-white rounded-md p-4 shadow-2xl"
+        className="relative w-3/4 md:w-1/2 bg-card rounded-md p-4 shadow-2xl"
       >
         <header className="flex justify-between pb-2">
           <h2 id={titleId} className="text-xl">
             {title}
           </h2>
-          <button
-            type="button"
-            aria-label="Close dialog"
-            className="text-gray-400 hover:text-gray-600 hover:bg-white rounded-full p-1 transition-colors cursor-pointer"
-            onClick={onClose}
-          >
+          <Button type="button" variant="secondary" aria-label="Close dialog" onClick={onClose}>
             <XIcon />
-          </button>
+          </Button>
         </header>
 
         {children}

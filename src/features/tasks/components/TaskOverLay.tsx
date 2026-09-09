@@ -13,7 +13,7 @@ export const TaskOverLay = ({ task }: { task: Task }) => {
   return (
     <li
       className={clsx(
-        `w-full min-h-24 flex flex-col justify-between rounded-2xl p-2 bg-white shadow-sm cursor-grabbing touch-none}`,
+        `w-full min-h-24 flex flex-col justify-between rounded-2xl p-2 bg-background shadow-sm cursor-grabbing touch-none}`,
         cardBorderVariants[task.priority]
       )}
     >

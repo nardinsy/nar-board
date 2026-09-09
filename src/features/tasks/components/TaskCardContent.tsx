@@ -27,7 +27,7 @@ const TaskLabel = ({ label }: { label: Label }) => {
 };
 
 const TaskDueDate = ({ date }: { date: string }) => {
-  return <div className="text-gray-500 text-xs">{formatISODate(date)}</div>;
+  return <div className="text-muted-foreground text-xs">{formatISODate(date)}</div>;
 };
 
 const TaskPriority = ({ priority }: { priority: Priority }) => {
@@ -53,7 +53,7 @@ const TaskAssignee = () => {
 export const TaskCardContent = React.memo(({ task }: { task: Task }) => {
   return (
     <>
-      <h3 className="font-semibold text-sm text-gray-900">{task.title}</h3>
+      <h3 className="font-semibold text-sm text-foreground">{task.title}</h3>
       <div className="flex gap-2 items-center">
         <TaskLabel label={task.label} />
         {task.dueDate && <TaskDueDate date={task.dueDate} />}

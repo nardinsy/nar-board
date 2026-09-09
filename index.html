@@ -4,7 +4,21 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>devboard</title>
+
+    <script>
+      try {
+        const stored = localStorage.getItem('theme-storage');
+        const theme = stored ? JSON.parse(stored)?.state?.theme : null;
+
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch {
+        // Ignore unavailable or invalid localStorage data.
+      }
+    </script>
+
+    <title>NarBoard</title>
   </head>
   <body>
     <div id="root"></div>
