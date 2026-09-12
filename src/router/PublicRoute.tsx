@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuthStore } from '@/features/auth/store/auth.store';
-import { DEFAULT_REDIRECT } from './routes';
+import { ROUTES } from './routes';
 
 const PublicRoute = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  return isAuthenticated ? <Navigate to={DEFAULT_REDIRECT} replace /> : <Outlet />;
+  return isAuthenticated ? <Navigate to={ROUTES.ROOT} replace /> : <Outlet />;
 };
 
 export default PublicRoute;
