@@ -1,7 +1,8 @@
-import { memo, useMemo, useRef } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { memo, useCallback, useMemo, useRef } from 'react';
+import { defaultRangeExtractor, Range, useVirtualizer } from '@tanstack/react-virtual';
 import { useNavigate } from 'react-router-dom';
 import { useDroppable } from '@dnd-kit/core';
+import { useDndContext } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import clsx from 'clsx';
@@ -43,11 +44,24 @@ export const BoardColumn = memo(function ({
   const navigate = useNavigate();
   const parentRef = useRef<HTMLDivElement>(null);
 
+  const { active } = useDndContext();
+  const activeIndex = active ? tasks.findIndex((t) => t.id === String(active.id)) : -1;
+
+  const rangeExtractor = useCallback(
+    (range: Range) => {
+      const indexes = defaultRangeExtractor(range);
+      if (activeIndex === -1 || indexes.includes(activeIndex)) return indexes;
+      return [...indexes, activeIndex].sort((a, b) => a - b);
+    },
+    [activeIndex]
+  );
+
   const virtualizer = useVirtualizer({
     count: tasks.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 110,
     overscan: 5,
+    rangeExtractor,
   });
 
   // const content =
