@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useNavigate } from 'react-router-dom';
-import { UniqueIdentifier, useDroppable } from '@dnd-kit/core';
+import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import clsx from 'clsx';
@@ -29,23 +29,17 @@ const statusTitleVariants: Record<ColumnStatus, string> = {
 };
 
 export const BoardColumn = ({
-  id,
   status,
   tasks,
   boardId,
   isLoading,
-  scrollPositions,
-  onScroll,
 }: {
-  id: UniqueIdentifier;
   status: ColumnStatus;
   tasks: Task[];
   boardId: string;
   isLoading: boolean;
-  scrollPositions: number;
-  onScroll: (columnId: string, scrollTop: number) => void;
 }) => {
-  const { setNodeRef } = useDroppable({ id });
+  const { setNodeRef } = useDroppable({ id: status });
   const navigate = useNavigate();
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +48,6 @@ export const BoardColumn = ({
     getScrollElement: () => parentRef.current,
     estimateSize: () => 110,
     overscan: 5,
-    initialOffset: scrollPositions,
   });
 
   // const content =
@@ -122,7 +115,6 @@ export const BoardColumn = ({
         ) : (
           <div
             ref={parentRef}
-            onScroll={(e) => onScroll(status, e.currentTarget.scrollTop)}
             className="min-h-40 flex-1 overflow-y-auto scrollbar-thin scrollbar-track-secondary scrollbar-thumb-foreground"
           >
             {tasks.length === 0 ? (

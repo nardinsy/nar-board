@@ -1,5 +1,5 @@
 import { IBoardRepository } from '../interfaces/board.interface';
-import { Board, ColumnStatus } from '@/features/board/types';
+import { Board, ColumnStatus, ColumnUpdate } from '@/features/board/types';
 import { CreateTaskDto, Task, UpdateTaskDto } from '@/features/tasks/types';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -70,15 +70,16 @@ export class MockBoardRepository implements IBoardRepository {
   }
 
   async getTasks(boardId: string): Promise<Task[]> {
-    // throw new Error('');
     await delay(0);
-    const boardExists = this.board.id === boardId;
-    if (!boardExists) throw new Error('Board not found');
-    // return DUMMY_TASKS.filter((task) => task.boardId === boardId);
+    if (this.board.id !== boardId) throw new Error('Board not found');
+
+    const byId = new Map(this.tasks.map((task) => [task.id, task]));
+
     return this.board.columns.flatMap((col) =>
       col.taskIds
-        .map((id) => this.tasks.find((task) => task.id === id))
+        .map((id) => byId.get(id))
         .filter((task): task is Task => task !== undefined)
+        .map((task) => ({ ...task }))
     );
   }
 
@@ -98,18 +99,21 @@ export class MockBoardRepository implements IBoardRepository {
     return [this.board];
   }
 
-  async updateColumnOrder(updates: { status: ColumnStatus; taskIds: string[] }[]): Promise<void> {
+  async updateColumnOrder(updates: ColumnUpdate[]): Promise<void> {
     await delay(0);
-    updates.forEach((update) => {
-      const col = this.board.columns.find((col) => col.status === update.status);
-      if (!col) throw new Error(`Column with status "${update.status}" not found`);
-      col.taskIds = update.taskIds;
 
-      update.taskIds.forEach((tId) => {
-        const t = this.tasks.find((task) => tId === task.id);
-        if (!t) throw new Error(`Task with id "${tId}" not found`);
-        t.status = update.status;
+    for (const { status, taskIds } of updates) {
+      if (!this.board.columns.some((c) => c.status === status))
+        throw new Error(`Column with status "${status}" not found`);
+      for (const id of taskIds)
+        if (!this.tasks.some((t) => t.id === id)) throw new Error(`Task with id "${id}" not found`);
+    }
+
+    for (const { status, taskIds } of updates) {
+      this.board.columns.find((c) => c.status === status)!.taskIds = taskIds;
+      taskIds.forEach((id) => {
+        this.tasks.find((t) => t.id === id)!.status = status;
       });
-    });
+    }
   }
 }

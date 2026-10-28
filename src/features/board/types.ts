@@ -16,6 +16,8 @@ export interface ColumnData {
   tasks: Task[];
 }
 
+export type ColumnUpdate = { status: ColumnStatus; taskIds: string[] };
+
 export type BoardColumns = ColumnData[];
 
 export interface Board {

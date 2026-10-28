@@ -3,16 +3,11 @@ import clsx from 'clsx';
 import { useTasks } from '../hooks/useTasks';
 import { BoardColumns } from './BoardColumns';
 import { ColumnStatus } from '../types';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { Button } from '@/components/ui';
 
 export const BoardContent = ({ boardId }: { boardId: string }) => {
-  const { data: tasks, error, isLoading, dataUpdatedAt } = useTasks(boardId);
-
-  const scrollPositions = useRef<Record<string, number>>({});
-  const saveScrollPosition = (columnId: string, scrollTop: number) => {
-    scrollPositions.current[columnId] = scrollTop;
-  };
+  const { data: tasks, error, isLoading } = useTasks(boardId);
 
   const boardData = useMemo(() => {
     const statuses: { id: ColumnStatus; status: ColumnStatus }[] = [
@@ -53,44 +48,8 @@ export const BoardContent = ({ boardId }: { boardId: string }) => {
           error && 'pointer-events-none'
         )}
       >
-        <BoardColumns
-          key={dataUpdatedAt}
-          columnsData={boardData}
-          boardId={boardId}
-          isLoading={isLoading}
-          scrollPositions={scrollPositions}
-          onScroll={saveScrollPosition}
-        />
+        <BoardColumns columnsData={boardData} boardId={boardId} isLoading={isLoading} />
       </section>
     </div>
   );
 };
-
-// TODO fix this mess
-// const todoTasks = tasks?.filter((task) => task.status === 'todo');
-// const inProgressTasks = tasks?.filter((task) => task.status === 'in-progress');
-// const inReviewTasks = tasks?.filter((task) => task.status === 'in-review');
-// const doneTasks = tasks?.filter((task) => task.status === 'done');
-
-// const boardData: { id: UniqueIdentifier; status: ColumnStatus; tasks: Task[] }[] = [
-//   {
-//     id: 'todo',
-//     status: 'todo',
-//     tasks: todoTasks ?? [],
-//   },
-//   {
-//     id: 'in-progress',
-//     status: 'in-progress',
-//     tasks: inProgressTasks ?? [],
-//   },
-//   {
-//     id: 'in-review',
-//     status: 'in-review',
-//     tasks: inReviewTasks ?? [],
-//   },
-//   {
-//     id: 'done',
-//     status: 'done',
-//     tasks: doneTasks ?? [],
-//   },
-// ];

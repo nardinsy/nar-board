@@ -94,7 +94,7 @@ const priorities: Priority[] = ['low', 'medium', 'high'];
 const labels: Label[] = ['feature', 'bug', 'docs', 'perf'];
 
 // eslint-disable-next-line prefer-const
-export const DUMMY_TASKS: Task[] = Array.from({ length: 1 }, (_, i) => {
+export const DUMMY_TASKS: Task[] = Array.from({ length: 8 }, (_, i) => {
   const status = statuses[i % statuses.length];
 
   return {
