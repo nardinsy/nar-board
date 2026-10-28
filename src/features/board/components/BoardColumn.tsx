@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useNavigate } from 'react-router-dom';
 import { useDroppable } from '@dnd-kit/core';
@@ -28,7 +28,7 @@ const statusTitleVariants: Record<ColumnStatus, string> = {
   todo: 'Todo',
 };
 
-export const BoardColumn = ({
+export const BoardColumn = memo(function ({
   status,
   tasks,
   boardId,
@@ -38,7 +38,7 @@ export const BoardColumn = ({
   tasks: Task[];
   boardId: string;
   isLoading: boolean;
-}) => {
+}) {
   const { setNodeRef } = useDroppable({ id: status });
   const navigate = useNavigate();
   const parentRef = useRef<HTMLDivElement>(null);
@@ -81,7 +81,7 @@ export const BoardColumn = ({
   //       </ul>
   //     </div>
   //   );
-
+  const taskIds = useMemo(() => tasks.map((t) => t.id), [tasks]);
   return (
     <section
       ref={setNodeRef}
@@ -109,7 +109,7 @@ export const BoardColumn = ({
         </Button>
       </div>
 
-      <SortableContext items={tasks.map((task) => task.id)} strategy={verticalListSortingStrategy}>
+      <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
         {isLoading ? (
           <div className="flex justify-center py-8 text-foreground text-sm">Loading ...</div>
         ) : (
@@ -151,4 +151,4 @@ export const BoardColumn = ({
       </SortableContext>
     </section>
   );
-};
+});

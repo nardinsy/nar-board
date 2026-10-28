@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { TaskCardContent } from './TaskCardContent';
 import { Priority } from '@/features/board/types';
 import { Task } from '../types';
+import { memo } from 'react';
 
 const cardBorderVariants: Record<Priority, string> = {
   low: 'border border-green-600',
@@ -13,7 +14,7 @@ const cardBorderVariants: Record<Priority, string> = {
   high: 'border border-red-600',
 };
 
-export const TaskCard = ({ id, task }: { id: UniqueIdentifier; task: Task }) => {
+export const TaskCard = memo(function ({ id, task }: { id: UniqueIdentifier; task: Task }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
     data: {
@@ -41,4 +42,4 @@ export const TaskCard = ({ id, task }: { id: UniqueIdentifier; task: Task }) => 
       <TaskCardContent task={task} />
     </div>
   );
-};
+});
