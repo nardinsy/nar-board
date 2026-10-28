@@ -1,4 +1,3 @@
-import { UniqueIdentifier } from '@dnd-kit/core';
 import { Task } from '../tasks/types';
 
 export type Priority = 'low' | 'medium' | 'high';
@@ -12,11 +11,12 @@ export interface Column {
   taskIds: string[];
 }
 
-export interface ColumnsData {
-  id: UniqueIdentifier;
+export interface ColumnData {
   status: ColumnStatus;
   tasks: Task[];
 }
+
+export type BoardColumns = ColumnData[];
 
 export interface Board {
   id: string;

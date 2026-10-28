@@ -57,42 +57,42 @@ export const BoardColumn = ({
     initialOffset: scrollPositions,
   });
 
-  const content =
-    tasks.length === 0 ? (
-      <div className="flex justify-center py-8 text-foreground text-sm">No task yet</div>
-    ) : (
-      <div
-        ref={(node) => {
-          setNodeRef(node);
-          parentRef.current = node;
-        }}
-        onScroll={(e) => onScroll(status, e.currentTarget.scrollTop)}
-        className="overflow-y-auto scrollbar-thin scrollbar-track-secondary scrollbar-thumb-foreground"
-      >
-        <ul style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-          {virtualizer.getVirtualItems().map((virtualItem) => {
-            const task = tasks[virtualItem.index];
-            return (
-              <li
-                key={task.id}
-                style={{
-                  position: 'absolute',
-                  top: virtualItem.start,
-                  width: '100%',
-                }}
-              >
-                <TaskCard id={task.id} task={task} />
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
+  // const content =
+  //   tasks.length === 0 ? (
+  //     <div className="flex justify-center py-8 text-foreground text-sm">No task yet</div>
+  //   ) : (
+  //     <div
+  //       ref={(node) => {
+  //         setNodeRef(node);
+  //         parentRef.current = node;
+  //       }}
+  //       onScroll={(e) => onScroll(status, e.currentTarget.scrollTop)}
+  //       className="overflow-y-auto scrollbar-thin scrollbar-track-secondary scrollbar-thumb-foreground"
+  //     >
+  //       <ul style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
+  //         {virtualizer.getVirtualItems().map((virtualItem) => {
+  //           const task = tasks[virtualItem.index];
+  //           return (
+  //             <li
+  //               key={task.id}
+  //               style={{
+  //                 position: 'absolute',
+  //                 top: virtualItem.start,
+  //                 width: '100%',
+  //               }}
+  //             >
+  //               <TaskCard id={task.id} task={task} />
+  //             </li>
+  //           );
+  //         })}
+  //       </ul>
+  //     </div>
+  //   );
 
   return (
     <section
       ref={setNodeRef}
-      className="flex flex-col gap-3 bg-secondary rounded-xl p-3 min-w-72 max-h-[calc(100vh-100px)]"
+      className={`flex flex-col gap-3 bg-secondary rounded-xl p-3 min-w-72 h-[calc(100vh-100px)] select-none`}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-1">
@@ -120,7 +120,41 @@ export const BoardColumn = ({
         {isLoading ? (
           <div className="flex justify-center py-8 text-foreground text-sm">Loading ...</div>
         ) : (
-          content
+          <div
+            ref={parentRef}
+            onScroll={(e) => onScroll(status, e.currentTarget.scrollTop)}
+            className="min-h-40 flex-1 overflow-y-auto scrollbar-thin scrollbar-track-secondary scrollbar-thumb-foreground"
+          >
+            {tasks.length === 0 ? (
+              <div className="flex min-h-40 items-center justify-center text-foreground text-sm">
+                No task yet
+              </div>
+            ) : (
+              <ul
+                style={{
+                  height: virtualizer.getTotalSize(),
+                  position: 'relative',
+                }}
+              >
+                {virtualizer.getVirtualItems().map((virtualItem) => {
+                  const task = tasks[virtualItem.index];
+
+                  return (
+                    <li
+                      key={task.id}
+                      style={{
+                        position: 'absolute',
+                        top: virtualItem.start,
+                        width: '100%',
+                      }}
+                    >
+                      <TaskCard id={task.id} task={task} />
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         )}
       </SortableContext>
     </section>
