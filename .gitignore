@@ -25,3 +25,7 @@ dist-ssr
 
 .env
 README+.md
+
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
