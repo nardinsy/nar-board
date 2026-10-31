@@ -7,7 +7,7 @@ import { TaskOverLay } from '@/features/tasks/components/TaskOverLay';
 import { ColumnData } from '../types';
 
 const AUTO_SCROLL = { threshold: { x: 0.2, y: 0.2 }, acceleration: 10 };
-const DROP_ANIMATION = { duration: 150 };
+const DROP_ANIMATION = { duration: 350 };
 
 export const BoardColumns = ({
   columnsData,

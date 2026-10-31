@@ -1,11 +1,11 @@
 import { Task } from '@/features/tasks/types';
 import { ColumnData, ColumnStatus, ColumnUpdate } from '../types';
 
-export const findColumnOfTask = (columns: ColumnData[], taskId: string) =>
+export const findColumnByTaskId = (columns: ColumnData[], taskId: string) =>
   columns.find((column) => column.tasks.some((task) => task.id === taskId));
 
-export const findColumnOfId = (columns: ColumnData[], id: string) =>
-  columns.find((column) => column.status === id) ?? findColumnOfTask(columns, id);
+export const resolveDropColumn = (columns: ColumnData[], id: string) =>
+  columns.find((column) => column.status === id) ?? findColumnByTaskId(columns, id);
 
 export const moveToColumn = (
   columns: ColumnData[],
@@ -14,7 +14,7 @@ export const moveToColumn = (
   overId: string | null, // the task we're hovering, or null/column id = append at the end
   insertAfter: boolean
 ): ColumnData[] => {
-  const from = findColumnOfTask(columns, taskId);
+  const from = findColumnByTaskId(columns, taskId);
   const to = columns.find((column) => column.status === toStatus);
 
   // nothing to do: unknown task, unknown column, or already there
@@ -51,7 +51,7 @@ export const reorderInColumn = (
   taskId: string,
   overId: string
 ): ColumnData[] => {
-  const column = findColumnOfTask(columns, taskId);
+  const column = findColumnByTaskId(columns, taskId);
   if (!column) return columns;
 
   const from = column.tasks.findIndex((t) => t.id === taskId);

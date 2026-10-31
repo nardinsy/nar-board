@@ -11,7 +11,12 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { useUpdateColumnOrder } from '../hooks/useUpdateColumnOrder';
-import { diffColumns, findColumnOfId, moveToColumn, reorderInColumn } from '../helpers/boardMoves';
+import {
+  diffColumns,
+  resolveDropColumn,
+  moveToColumn,
+  reorderInColumn,
+} from '../helpers/boardMoves';
 
 import { Task } from '@/features/tasks/types';
 import { ColumnData } from '../types';
@@ -26,6 +31,7 @@ export const useBoardDnd = (columnsData: ColumnData[], boardId: string) => {
 
   // the cache changed after the drop, so it now has our result: discard the draft
   const cacheCaughtUp = draft !== null && activeItem === null && draft.base !== columnsData;
+
   if (cacheCaughtUp) setDraft(null);
 
   const columns = draft && !cacheCaughtUp ? draft.columns : columnsData;
@@ -35,7 +41,7 @@ export const useBoardDnd = (columnsData: ColumnData[], boardId: string) => {
       activationConstraint: { distance: 8 },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: { delay: 200, tolerance: 8 },
+      activationConstraint: { delay: 150, tolerance: 8 },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -63,7 +69,7 @@ export const useBoardDnd = (columnsData: ColumnData[], boardId: string) => {
 
     setDraft((prev) => {
       if (!prev) return prev;
-      const overColumn = findColumnOfId(prev.columns, overId);
+      const overColumn = resolveDropColumn(prev.columns, overId);
       if (!overColumn) return prev;
       const next = moveToColumn(prev.columns, activeId, overColumn.status, overId, insertAfter);
       return next === prev.columns ? prev : { ...prev, columns: next };

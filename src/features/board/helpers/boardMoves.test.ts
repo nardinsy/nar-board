@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import {
   applyColumnUpdates,
   diffColumns,
-  findColumnOfId,
-  findColumnOfTask,
+  resolveDropColumn,
+  findColumnByTaskId,
   moveToColumn,
   reorderInColumn,
 } from './boardMoves';
@@ -30,25 +30,25 @@ const columns: ColumnData[] = [
 
 describe('findColumnOfTask', () => {
   it('finds the column that contains the task', () => {
-    expect(findColumnOfTask(columns, 'c')?.status).toBe('in-progress');
+    expect(findColumnByTaskId(columns, 'c')?.status).toBe('in-progress');
   });
 
   it('returns undefined for an unknown task', () => {
-    expect(findColumnOfTask(columns, 'zzz')).toBeUndefined();
+    expect(findColumnByTaskId(columns, 'zzz')).toBeUndefined();
   });
 });
 
 describe('findColumnOfId', () => {
   it('finds a column by its own status', () => {
-    expect(findColumnOfId(columns, 'done')?.status).toBe('done');
+    expect(resolveDropColumn(columns, 'done')?.status).toBe('done');
   });
 
   it('finds the column of a task id', () => {
-    expect(findColumnOfId(columns, 'a')?.status).toBe('todo');
+    expect(resolveDropColumn(columns, 'a')?.status).toBe('todo');
   });
 
   it('returns undefined for an unknown id', () => {
-    expect(findColumnOfId(columns, 'zzz')).toBeUndefined();
+    expect(resolveDropColumn(columns, 'zzz')).toBeUndefined();
   });
 });
 

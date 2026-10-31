@@ -4,7 +4,7 @@ A task management app built with React to track and manage project progress acro
 
 ## Overview
 
-NarBoard is a Kanban-style task manager where you can create, edit, delete, and drag tasks between columns to track their progress. Built as a real-world architecture practice project.
+NarBoard is a Kanban-style task manager where you can create, edit, delete, and drag tasks between columns to track their progress.
 
 ## Live Demo
 
@@ -17,17 +17,18 @@ _Coming soon_
 
 ## Tech Stack
 
-| Tool                  | Why                                                 |
-| --------------------- | --------------------------------------------------- |
-| React 19 + TypeScript | Industry standard, strict type safety               |
-| Vite                  | Fast development server                             |
-| TanStack Query        | Server state management, caching, and data fetching |
-| Zustand               | Lightweight client state management                 |
-| React Hook Form + Zod | Form handling with runtime schema validation        |
-| dnd-kit               | Accessible drag and drop                            |
-| Tailwind CSS v4       | Utility-first styling                               |
-| shadcn/ui             | Accessible, unstyled component primitives           |
-| Axios                 | HTTP client with interceptor support                |
+| Tool                           | Why                                                 |
+| ------------------------------ | --------------------------------------------------- |
+| React 19 + TypeScript          | Industry standard, strict type safety               |
+| Vite                           | Fast development server                             |
+| TanStack Query                 | Server state management, caching, and data fetching |
+| Zustand                        | Lightweight client state management                 |
+| React Hook Form + Zod          | Form handling with runtime schema validation        |
+| dnd-kit                        | Accessible drag and drop                            |
+| Tailwind CSS v4                | Utility-first styling                               |
+| shadcn/ui                      | Accessible, unstyled component primitives           |
+| Axios                          | HTTP client with interceptor support                |
+| Vitest + React Testing Library | Unit and component testing                          |
 
 ## Features
 
@@ -42,7 +43,7 @@ _Coming soon_
 
 ### Feature-based folder structure
 
-Code is organized by feature (`features/auth/`, `features/board/`) rather than by type (`components/`, `hooks/`). Everything related to a feature lives together — easier to navigate, easier to scale.
+Code is organized by feature (`features/auth/`, `features/board/`).
 
 ### Repository pattern
 
@@ -51,7 +52,7 @@ All data access goes through a repository interface (`IAuthRepository`, `IBoardR
 ### TanStack Query vs Zustand
 
 - **TanStack Query** owns all server state — tasks, board data. Handles caching, refetching, and invalidation automatically.
-- **Zustand** owns client state only — auth session, UI state. Persisted to localStorage so sessions survive page refresh.
+- **Zustand** owns client state only — auth session, UI state.
 
 ### Centralized route constants
 
