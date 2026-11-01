@@ -84,12 +84,20 @@ export class MockBoardRepository implements IBoardRepository {
   }
 
   async updateTask(id: string, data: UpdateTaskDto): Promise<Task> {
-    const index = this.tasks.findIndex((task) => id === task.id);
-    if (index === -1) throw new Error('Not found');
-    this.tasks[index] = { ...this.tasks[index], ...data };
-
     await delay(0);
-    return this.tasks[index];
+
+    const index = this.tasks.findIndex((task) => id === task.id);
+    if (index === -1) throw new Error(`Task with id "${id}" not found.`);
+
+    const current = this.tasks[index];
+
+    if (data.status && data.status !== current.status) {
+      this.addToBoard(data.status, id);
+      this.deleteFromBoard(current.status, id);
+    }
+    this.tasks[index] = { ...current, ...data };
+
+    return { ...this.tasks[index] };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

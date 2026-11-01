@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Task } from '@/features/tasks/types';
 import { MockBoardRepository } from './board.mock';
-import { Board } from '@/features/board/types';
+import { Board, ColumnStatus } from '@/features/board/types';
 
 const DUMMY_TASKS_TEST: Task[] = [
   {
@@ -45,7 +45,10 @@ const DUMMY_BOARD_TEST: Board = {
 describe('MockBoardRepository', () => {
   let repo: MockBoardRepository;
   beforeEach(() => {
-    repo = new MockBoardRepository(DUMMY_BOARD_TEST, DUMMY_TASKS_TEST);
+    repo = new MockBoardRepository(
+      structuredClone(DUMMY_BOARD_TEST),
+      structuredClone(DUMMY_TASKS_TEST)
+    );
   });
 
   it('getTasks returns tasks in taskIds order, not array order', async () => {
@@ -79,6 +82,40 @@ describe('MockBoardRepository', () => {
 
     expect(boardTasks.find((task) => task.id === 'task-1')).toBe(undefined);
     expect(tasksIdByStatus.find((id) => id === 'task-1')).toBe(undefined);
+  });
+
+  it('updateTask moves the task to the end of the new column when status changes', async () => {
+    await repo.updateTask('task-2', { status: 'in-progress' });
+
+    const tasks = await repo.getTasks('test_board');
+    expect(tasks.map((t) => [t.id, t.status])).toEqual([
+      ['task-1', 'todo'],
+      ['task-2', 'in-progress'],
+    ]);
+  });
+
+  it('updateTask keeps the position when the status does not change', async () => {
+    await repo.updateTask('task-2', { title: 'Renamed' });
+
+    const tasks = await repo.getTasks('test_board');
+    expect(tasks.map((t) => t.id)).toEqual(['task-2', 'task-1']);
+    expect(tasks[0].title).toBe('Renamed');
+  });
+
+  it('updateTask throws for an unknown id', async () => {
+    await expect(repo.updateTask('nope', { title: 'X' })).rejects.toThrow('not found');
+  });
+
+  it('updateTask changes nothing when the new column does not exist', async () => {
+    await expect(repo.updateTask('task-2', { status: 'nope' as ColumnStatus })).rejects.toThrow(
+      'not found'
+    );
+
+    const tasks = await repo.getTasks('test_board');
+    expect(tasks.map((t) => [t.id, t.status])).toEqual([
+      ['task-2', 'todo'],
+      ['task-1', 'todo'],
+    ]);
   });
 });
 
