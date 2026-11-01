@@ -1,14 +1,20 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import { useBoard } from '../hooks/useBoard';
 import NotFoundPage from '@/pages/NotFoundPage';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { Modal } from '@/components/Modal';
 import { NewTaskForm } from '@/features/tasks/components/NewTaskForm';
 import { BoardContent } from '../components/BoardContent';
 import { BoardHeader } from '../components/BoardHeader';
+import { useBoard } from '../hooks/useBoard';
+
 import { ColumnStatus } from '../types';
-import { useCallback } from 'react';
+import { COLUMN_STATUSES } from '../constants';
+
+type ModalParam = 'createTask' | 'updateTask';
+const isColumnStatus = (value: string): value is ColumnStatus => {
+  return COLUMN_STATUSES.includes(value as ColumnStatus);
+};
 
 const BoardPage = () => {
   const { boardId } = useParams<{ boardId: string }>();
@@ -16,14 +22,18 @@ const BoardPage = () => {
 
   const { data: board, isLoading, error } = useBoard(boardId ?? '');
 
-  const showModal = !!searchParams.get('createTask');
+  const createTaskParam = searchParams.get('createTask');
+  const updateTaskId = searchParams.get('updateTask');
 
-  const handleCloseModal = useCallback(() => {
-    setSearchParams((searchParams) => {
-      searchParams.delete('createTask');
-      return searchParams;
+  const createTaskStatus =
+    createTaskParam && isColumnStatus(createTaskParam) ? createTaskParam : null;
+
+  const removeModalParam = (param: ModalParam) => {
+    setSearchParams((params) => {
+      params.delete(param);
+      return params;
     });
-  }, [setSearchParams]);
+  };
 
   if (isLoading) return <LoadingScreen />;
   if (error || !board || !boardId) return <NotFoundPage />;
@@ -32,13 +42,19 @@ const BoardPage = () => {
     <>
       <BoardHeader board={board} />
       <BoardContent boardId={boardId} />
-      {showModal && (
-        <Modal onClose={handleCloseModal} title="Create a new task">
+      {createTaskStatus && (
+        <Modal onClose={() => removeModalParam('createTask')} title="Create a new task">
           <NewTaskForm
             boardId={boardId}
-            status={searchParams.get('createTask') as ColumnStatus}
-            onClose={handleCloseModal}
+            status={createTaskStatus}
+            onClose={() => removeModalParam('createTask')}
           />
+        </Modal>
+      )}
+
+      {updateTaskId && (
+        <Modal onClose={() => removeModalParam('updateTask')} title="Edit task">
+          <p>Editing task: {updateTaskId}</p>
         </Modal>
       )}
     </>

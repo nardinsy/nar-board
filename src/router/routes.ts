@@ -25,4 +25,8 @@ export const ROUTE_BUILDERS = {
     const board = PROTECTED_ROUTES.BOARD.replace(':boardId', boardId);
     return `${board}?createTask=${status}`;
   },
+  updateTask: (boardId: string, taskId: string) => {
+    const board = PROTECTED_ROUTES.BOARD.replace(':boardId', boardId);
+    return `${board}?updateTask=${taskId}`;
+  },
 } as const;

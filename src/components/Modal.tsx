@@ -3,6 +3,11 @@ import { XIcon } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { Button } from './ui';
 
+// TODO: move focus into the dialog on open, return focus to the trigger on close,
+// and trap Tab inside while it's open. (Radix Dialog / shadcn Dialog does all three.)
+// TODO(perf): `onClose` is a new function each render in BoardPage, so the Esc
+// listener is re-attached every render. Wrap in useCallback, or keep onClose in a ref.
+
 const ModalBackdrop = ({ onClick }: { onClick: () => void }) => {
   return (
     <div
