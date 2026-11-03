@@ -23,4 +23,4 @@ export interface CreateTaskDto {
   dueDate?: string;
 }
 
-export type UpdateTaskDto = Partial<Omit<Task, 'id' | 'createdAt'>>;
+export type UpdateTaskDto = Partial<Omit<Task, 'id' | 'createdAt' | 'boardId'>>;
