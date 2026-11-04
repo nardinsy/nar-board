@@ -1,14 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import { boardRepository } from '@/services';
-import { ColumnUpdate } from '../types';
+import { tasksQueryOptions } from '@/features/tasks/queries';
 import { applyColumnUpdates } from '../helpers/boardMoves';
-import { toast } from 'sonner';
+
+import { ColumnUpdate } from '../types';
 import { Task } from '@/features/tasks/types';
 
 export const useUpdateColumnOrder = (boardId: string) => {
   const queryClient = useQueryClient();
-  const queryKey = ['tasks', boardId];
+  // const queryKey = ['tasks', boardId];
+  const queryKey = tasksQueryOptions(boardId).queryKey;
 
   return useMutation({
     mutationFn: (updates: ColumnUpdate[]) => boardRepository.updateColumnOrder(updates),
