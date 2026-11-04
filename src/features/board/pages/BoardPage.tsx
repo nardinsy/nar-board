@@ -4,6 +4,7 @@ import NotFoundPage from '@/pages/NotFoundPage';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { Modal } from '@/components/Modal';
 import { NewTaskForm } from '@/features/tasks/components/NewTaskForm';
+import { UpdateTaskModalContent } from '@/features/tasks/components/UpdateTaskModalContent';
 import { BoardContent } from '../components/BoardContent';
 import { BoardHeader } from '../components/BoardHeader';
 import { useBoard } from '../hooks/useBoard';
@@ -54,7 +55,11 @@ const BoardPage = () => {
 
       {updateTaskId && (
         <Modal onClose={() => removeModalParam('updateTask')} title="Edit task">
-          <p>Editing task: {updateTaskId}</p>
+          <UpdateTaskModalContent
+            boardId={boardId}
+            taskId={updateTaskId}
+            onClose={() => removeModalParam('updateTask')}
+          />
         </Modal>
       )}
     </>
