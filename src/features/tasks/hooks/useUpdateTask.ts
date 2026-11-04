@@ -3,8 +3,8 @@ import { toast } from 'sonner';
 
 import { boardRepository } from '@/services';
 import { applyTaskUpdate } from '../helpers/taskUpdates';
-import { tasksQueryOptions } from '../queries';
 
+import { tasksQueryOptions } from '../queries';
 import { Task, UpdateTaskDto } from '../types';
 
 type UpdateTaskVariables = { taskId: string; data: UpdateTaskDto };
