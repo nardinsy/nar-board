@@ -108,7 +108,7 @@ export const BoardColumn = memo(function ({
           <h2 className="text-sm font-medium text-secondary-foreground">
             {statusTitleVariants[status]}
           </h2>
-          <span className="text-sm text-gray-400 bg-white rounded-full px-2 py-0.5 border border-gray-200">
+          <span className="inline-flex items-center justify-center w-7 h-7 text-sm text-gray-400 bg-white rounded-full border border-gray-200">
             {tasks.length}
           </span>
         </div>

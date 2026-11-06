@@ -31,7 +31,7 @@ const TaskLabel = ({ label }: { label: Label }) => {
 };
 
 const TaskDueDate = ({ date }: { date: string }) => {
-  return <div className="text-muted-foreground text-xs">{formatISODate(date)}</div>;
+  return <div className="text-muted-foreground text-xs w-12">{formatISODate(date)}</div>;
 };
 
 const TaskPriority = ({ priority }: { priority: Priority }) => {
@@ -59,10 +59,16 @@ export const TaskCardContent = memo(({ task }: { task: Task }) => {
 
   return (
     <>
-      <h3 className="font-semibold text-sm text-foreground">{task.title}</h3>
-      <div className="grid grid-cols-5 items-center text-center gap-1">
+      <h3 className="font-semibold text-sm text-foreground pb-2 line-clamp-2 overflow-hidden whitespace-pre-wrap wrap-break-word">
+        {task.title}
+      </h3>
+      <div className="flex items-center justify-between gap-1">
         <TaskLabel label={task.label} />
-        {task.dueDate && <TaskDueDate date={task.dueDate} />}
+        {task.dueDate ? (
+          <TaskDueDate date={task.dueDate} />
+        ) : (
+          <div aria-hidden="true" className="w-12" />
+        )}
         <TaskPriority priority={task.priority} />
         <TaskAssignee />
         <Button

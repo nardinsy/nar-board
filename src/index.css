@@ -227,4 +227,8 @@
   html {
     @apply font-sans;
   }
+
+  .task-card-wrapper {
+    @apply w-full h-24 flex flex-col justify-between rounded-2xl p-2 bg-background shadow-sm;
+  }
 }

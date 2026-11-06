@@ -35,7 +35,7 @@ export const TaskCard = memo(function ({ id, task }: { id: UniqueIdentifier; tas
       {...attributes}
       {...listeners}
       className={clsx(
-        `w-full min-h-24 flex flex-col justify-between rounded-2xl p-2 bg-background shadow-sm cursor-grab active:cursor-grabbing ${isDragging ? 'z-10 shadow-md opacity-50' : ''}`,
+        `task-card-wrapper cursor-grab active:cursor-grabbing ${isDragging ? 'z-10 shadow-md opacity-50' : ''}`,
         cardBorderVariants[task.priority]
       )}
     >
