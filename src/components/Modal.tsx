@@ -36,16 +36,16 @@ export const Modal = ({
   }, [onClose]);
 
   return createPortal(
-    <div className="fixed inset-0 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <ModalBackdrop onClick={onClose} />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative w-3/4 md:w-1/2 bg-card rounded-md p-4 shadow-2xl"
+        className="relative flex flex-col w-full max-w-2xl max-h-[calc(100dvh-2rem)] min-h-0 bg-card rounded-md p-4 shadow-2xl"
       >
-        <header className="flex justify-between pb-2">
+        <header className="flex shrink-0 items-center justify-between pb-2">
           <h2 id={titleId} className="text-xl">
             {title}
           </h2>
@@ -54,7 +54,9 @@ export const Modal = ({
           </Button>
         </header>
 
-        {children}
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-thumb-foreground scrollbar-thin">
+          {children}
+        </div>
       </div>
     </div>,
     document.body
