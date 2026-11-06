@@ -1,25 +1,13 @@
 import { z } from 'zod';
-import { CreateTaskDto, UpdateTaskDto } from './types';
+import { CreateTaskDto } from './types';
 
-export const newTaskSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  priority: z.enum(['low', 'medium', 'high']),
-  label: z.enum(['feature', 'bug', 'docs', 'perf']),
-  status: z.enum(['todo', 'in-progress', 'in-review', 'done']),
-  boardId: z.string(),
-  description: z.string().optional(),
-  dueDate: z.string().optional(),
-}) satisfies z.ZodType<CreateTaskDto>;
-
-export type NewTaskFormData = z.infer<typeof newTaskSchema>;
-
-export const updateTaskSchema = z.object({
+export const taskFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   priority: z.enum(['low', 'medium', 'high']),
   label: z.enum(['feature', 'bug', 'docs', 'perf']),
   status: z.enum(['todo', 'in-progress', 'in-review', 'done']),
   description: z.string().optional(),
   dueDate: z.string().optional(),
-}) satisfies z.ZodType<UpdateTaskDto>;
+}) satisfies z.ZodType<Omit<CreateTaskDto, 'boardId'>>;
 
-export type UpdateTaskFormData = z.infer<typeof updateTaskSchema>;
+export type TaskFormData = z.infer<typeof taskFormSchema>;

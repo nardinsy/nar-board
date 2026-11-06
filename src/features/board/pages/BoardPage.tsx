@@ -1,5 +1,7 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 
+import { useBoard } from '../hooks/useBoard';
+
 import NotFoundPage from '@/pages/NotFoundPage';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { Modal } from '@/components/Modal';
@@ -7,7 +9,6 @@ import { NewTaskForm } from '@/features/tasks/components/NewTaskForm';
 import { UpdateTaskModalContent } from '@/features/tasks/components/UpdateTaskModalContent';
 import { BoardContent } from '../components/BoardContent';
 import { BoardHeader } from '../components/BoardHeader';
-import { useBoard } from '../hooks/useBoard';
 
 import { ColumnStatus } from '../types';
 import { COLUMN_STATUSES } from '../constants';
