@@ -1,3 +1,4 @@
+import { ComponentProps } from 'react';
 import { Controller, SubmitHandler, UseFormReturn } from 'react-hook-form';
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
@@ -10,15 +11,25 @@ import { DatePicker } from '@/components/DatePicker';
 import { CustomSelect } from '@/components/CustomSelect';
 import { TaskFormData } from '../schemas';
 
+type ButtonVariant = ComponentProps<typeof Button>['variant'];
+
 interface TaskFormProps {
   id: string;
   form: UseFormReturn<TaskFormData>;
   onClose: () => void;
   onSubmit: SubmitHandler<TaskFormData>;
   submitLabel: string;
+  extraAction?: { label: string; variant: ButtonVariant; onClick: () => void };
 }
 
-export const TaskForm = ({ id, form, onClose, onSubmit, submitLabel }: TaskFormProps) => {
+export const TaskForm = ({
+  id,
+  form,
+  onClose,
+  onSubmit,
+  submitLabel,
+  extraAction,
+}: TaskFormProps) => {
   return (
     <form id={id} className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
@@ -73,11 +84,18 @@ export const TaskForm = ({ id, form, onClose, onSubmit, submitLabel }: TaskFormP
       </FieldGroup>
 
       {/* //TODO button style */}
-      <Field orientation="horizontal">
-        <Button type="button" variant="outline" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button type="submit">{submitLabel || 'Save'}</Button>
+      <Field orientation="horizontal" className="flex justify-between">
+        <div className="flex gap-2">
+          <Button type="button" variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit">{submitLabel || 'Save'}</Button>
+        </div>
+        {extraAction && (
+          <Button type="button" variant={extraAction.variant} onClick={extraAction.onClick}>
+            {extraAction.label}
+          </Button>
+        )}
       </Field>
     </form>
   );
