@@ -19,3 +19,9 @@ export const applyTaskUpdate = (tasks: Task[], id: string, data: UpdateTaskDto):
   // status changed: move to the end of new column
   return [...tasks.slice(0, index), ...tasks.slice(index + 1), updated];
 };
+
+export const removeTask = (tasks: Task[], taskId: string): Task[] => {
+  if (!tasks.some((t) => t.id === taskId)) return tasks;
+
+  return tasks.filter((t) => t.id !== taskId);
+};

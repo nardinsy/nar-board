@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { applyTaskUpdate } from './taskUpdates';
+import { applyTaskUpdate, removeTask } from './taskUpdates';
 import { Task } from '../types';
 
 const makeTask = (overrides: Partial<Task> = {}): Task => ({
@@ -56,5 +56,26 @@ describe('applyTaskUpdate', () => {
 
     expect(tasks).toEqual([a, b]);
     expect(a.status).toBe('todo');
+  });
+});
+
+describe('removeTask', () => {
+  const a = makeTask({ id: 'a' });
+  const b = makeTask({ id: 'b' });
+  const c = makeTask({ id: 'c', status: 'done' });
+
+  it('removes the task and keeps the others by reference', () => {
+    const result = removeTask([a, b, c], 'b');
+
+    expect(result).toHaveLength(2);
+    expect(result[0]).toBe(a);
+    expect(result[1]).toBe(c);
+  });
+
+  it('does not mutate the input', () => {
+    const tasks = [a, b];
+    removeTask(tasks, 'a');
+
+    expect(tasks).toEqual([a, b]);
   });
 });
