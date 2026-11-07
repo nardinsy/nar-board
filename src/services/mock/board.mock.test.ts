@@ -84,6 +84,23 @@ describe('MockBoardRepository', () => {
     expect(tasksIdByStatus.find((id) => id === 'task-1')).toBe(undefined);
   });
 
+  it('deleteTask removes the task and keeps the other tasks', async () => {
+    await repo.deleteTask('task-1');
+
+    const tasks = await repo.getTasks('test_board');
+    expect(tasks.map((t) => t.id)).toEqual(['task-2']);
+  });
+
+  it('deleteTask makes later updates to that task fail', async () => {
+    await repo.deleteTask('task-1');
+
+    await expect(repo.updateTask('task-1', { title: 'X' })).rejects.toThrow('not found');
+  });
+
+  it('deleteTask throws for an unknown id', async () => {
+    await expect(repo.deleteTask('nope')).rejects.toThrow('not found');
+  });
+
   it('updateTask moves the task to the end of the new column when status changes', async () => {
     await repo.updateTask('task-2', { status: 'in-progress' });
 
@@ -118,114 +135,3 @@ describe('MockBoardRepository', () => {
     ]);
   });
 });
-
-// const DUMMY_TASKS_TEST: Task[] = [
-//   {
-//     id: 'task-1',
-//     title: 'Setup CI/CD pipeline',
-//     description: 'Description',
-//     priority: 'medium',
-//     label: 'feature',
-//     status: 'in-progress',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-//   {
-//     id: 'task-2',
-//     title: 'Implement drag and drop',
-//     description: 'Description',
-//     priority: 'high',
-//     label: 'perf',
-//     status: 'in-review',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-//   {
-//     id: 'task-3',
-//     title: 'Write API documentation',
-//     description: 'Description',
-//     priority: 'low',
-//     label: 'docs',
-//     status: 'done',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-//   {
-//     id: 'task-4',
-//     title: 'Fix search performance bug',
-//     description: 'Description',
-//     priority: 'low',
-//     label: 'bug',
-//     status: 'todo',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-//   {
-//     id: 'task-5',
-//     title: 'Auth token refresh logic',
-//     description: 'Description',
-//     priority: 'high',
-//     label: 'perf',
-//     status: 'done',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-//   {
-//     id: 'task-6',
-//     title: 'Add dark mode support',
-//     description: 'Description',
-//     priority: 'low',
-//     label: 'docs',
-//     status: 'in-progress',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-//   {
-//     id: 'task-7',
-//     title: 'Write unit tests for auth',
-//     description: 'Description',
-//     priority: 'medium',
-//     label: 'docs',
-//     status: 'in-review',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-//   {
-//     id: 'task-8',
-//     title: 'Fix mobile layout issues',
-//     description: 'Description',
-//     priority: 'high',
-//     label: 'bug',
-//     status: 'todo',
-//     assigneeId: '1',
-//     boardId: 'board-1',
-//     createdAt: '2026-06-01T09:00:00Z',
-//     dueDate: '2026-06-20T09:00:00Z',
-//   },
-// ];
-
-// const DUMMY_BOARD_TEST: Board = {
-//   id: 'board-1',
-//   title: 'Project-1',
-//   columns: [
-//     { id: 'col-1', title: 'Todo', status: 'todo', taskIds: ['task-4', 'task-8'] },
-//     { id: 'col-2', title: 'In Progress', status: 'in-progress', taskIds: ['task-1', 'task-6'] },
-//     { id: 'col-3', title: 'In Review', status: 'in-review', taskIds: ['task-2', 'task-7'] },
-//     { id: 'col-4', title: 'Done', status: 'done', taskIds: ['task-3', 'task-5'] },
-//   ],
-//   createdAt: '2026-06-01T09:00:00Z',
-// };

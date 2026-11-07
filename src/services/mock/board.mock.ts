@@ -45,13 +45,13 @@ export class MockBoardRepository implements IBoardRepository {
   }
 
   async deleteTask(id: string): Promise<void> {
-    const task = this.tasks.find((task) => task.id === id);
-    if (!task) throw new Error('Task not found');
-    this.deleteFromBoard(task.status, id);
-    // DUMMY_TASKS = DUMMY_TASKS.filter((task) => task.id !== id);
-    // TODO I keep deleted task in DUMMY_TASK for now, Fix this
-
     await delay(0);
+
+    const task = this.tasks.find((task) => task.id === id);
+    if (!task) throw new Error(`Task with id ${id} not found`);
+
+    this.deleteFromBoard(task.status, id);
+    this.tasks = this.tasks.filter((t) => t.id !== id);
   }
 
   async getBoard(boardId: string): Promise<Board> {
