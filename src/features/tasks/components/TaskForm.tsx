@@ -85,17 +85,17 @@ export const TaskForm = ({
 
       {/* //TODO button style */}
       <Field orientation="horizontal" className="flex justify-between">
-        <div className="flex gap-2">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type="submit">{submitLabel || 'Save'}</Button>
-        </div>
         {extraAction && (
           <Button type="button" variant={extraAction.variant} onClick={extraAction.onClick}>
             {extraAction.label}
           </Button>
         )}
+        <div className="flex gap-2 ml-auto">
+          <Button type="button" variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit">{submitLabel || 'Save'}</Button>
+        </div>
       </Field>
     </form>
   );
